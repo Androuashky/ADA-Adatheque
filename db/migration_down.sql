@@ -1,0 +1,4 @@
+-- Active: 1788165115430@@127.0.0.1@5451@adatheque_db
+DROP TABLE IF EXISTS genre, film CASCADE;
+
+DROP TYPE IF EXISTS supp ;
