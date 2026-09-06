@@ -1,0 +1,21 @@
+.carte {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    gap: 20px;
+}
+
+.carte li {
+    background-color: #892be23c;
+    color: rgb(0, 0, 60);
+    /* width: 600px; */
+    list-style: none;
+    border: 2px solid #7000d85c;
+    border-radius: 10px;
+    text-align: center;
+    padding: 9px 7px;
+}
+
+.carte li:hover {
+    background-color: #7000d85c;;
+} 

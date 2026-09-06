@@ -1,0 +1,8 @@
+.genre {
+    border-radius: 10px;
+    border: 1px solid coral;
+    background-color: antiquewhite;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 5px 10px;
+    color: rgb(112, 112, 112);
+}

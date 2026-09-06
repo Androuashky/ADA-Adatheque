@@ -1,0 +1,42 @@
+GET http://localhost:3001/films
+
+###
+GET http://localhost:3001/films/3
+
+### erreur champts manquants
+POST http://localhost:3001/films
+Content-Type: application/json
+
+{
+  "titre": "Inception",
+  "année": 2010,
+  "durée_en_minutes": 148
+}
+
+### POST 
+POST http://localhost:3001/films
+Content-Type: application/json
+
+{
+  "titre": "Inception",
+  "année": 2010,
+  "durée_en_minutes": 148,
+  "genre_id": 3
+}
+
+### erreur support 
+POST http://localhost:3001/films
+Content-Type: application/json
+
+{
+  "titre": "Inception",
+  "année": 2010,
+  "durée_en_minutes": 148,
+  "support": "kk",
+  "genre_id": 3
+}
+
+
+
+
+

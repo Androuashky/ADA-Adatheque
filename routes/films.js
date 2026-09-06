@@ -9,7 +9,7 @@ rfilms.get('/', async (req, res) => {
     const disponible = req.query.disponibilité?? null;
 
     const { rows } = await pool.query(`
-        SELECT titre, libellé 
+        SELECT titre, libellé , année
         FROM film 
         JOIN genre ON genre.id = film.genre_id 
         WHERE film.genre_id = COALESCE($1::INTEGER, film.genre_id) AND disponibilité = COALESCE($2::BOOLEAN,film.disponibilité)`, 
@@ -58,6 +58,43 @@ rfilms.get('/:id', async (req,res)=> {
     }
 
     res.json(rows)
+})
+
+rfilms.post('/', async (req, res) => {
+    const {titre, année, durée_en_minutes, support, genre_id} = req.body
+
+    const champsManquants = [];
+    if (!titre) champsManquants.push('titre');
+    if (!année) champsManquants.push('année');
+    if (!durée_en_minutes) champsManquants.push('durée_en_minutes');
+    if (!genre_id) champsManquants.push('genre_id');
+
+    if (champsManquants.length > 0) {
+        return res.status(400).json({
+            erreur: `Champ(s) manquant(s) : ${champsManquants.join(', ')}`
+        })
+    }
+
+    // b. le support, s'il est fourni, doit être dans la liste blanche
+    const supportsValides = ['dvd', 'bluray', 'numerique'];
+    if (support !== undefined && !supportsValides.includes(support)) {
+        return res.status(400).json({
+            erreur: `Support invalide : "${support}". Valeurs acceptées : ${supportsValides.join(', ')}`
+        })
+    }
+
+    // c. l'année doit être comprise entre 1888 et l'année prochaine
+    const anneeProchaine = new Date().getFullYear() + 1;
+    if (année < 1888 || année > anneeProchaine) {
+        return res.status(400).json({
+            erreur: `Année invalide : ${année}. Doit être comprise entre 1888 et ${anneeProchaine}`
+        })
+    }
+
+    const {rows} = await pool.query('INSERT INTO film (titre, année, durée_en_minutes, support, genre_id) VALUES($1, $2, $3, $4, $5) RETURNING *',
+    [titre, année, durée_en_minutes, support, genre_id]
+    )
+    res.status(201).json(rows[0]);
 })
 
 

@@ -4,7 +4,7 @@ import {pool} from '../db.js';
 const rgenre = express.Router()
 
 rgenre.get('/', async (req, res) => {
-    const { rows } = await pool.query('SELECT libellé from genre ORDER BY libellé ASC')
+    const { rows } = await pool.query('SELECT id, libellé from genre ORDER BY libellé ASC')
     res.json(rows)
 })
 rgenre.get('/:id/films', async (req,res)=> {
